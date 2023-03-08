@@ -113,6 +113,8 @@ class holder implements Serializable
     Doubleroom deluxe_doublerrom[]=new Doubleroom[20]; //Deluxe
     Singleroom luxury_singleerrom[]=new Singleroom[10]; //Luxury
     Singleroom deluxe_singleerrom[]=new Singleroom[20]; //Deluxe
+    TripleRoom luxury_triplerrom[]= new TripleRoom[10]; // Luxury
+    TripleRoom deluxe_triplerrom[]=new TripleRoom[20]; //Deluxe
 }
 
 class Hotel
@@ -121,7 +123,7 @@ class Hotel
     static Scanner sc = new Scanner(System.in);
     static void CustDetails(int i,int rn)
     {
-        String name, contact, gender;
+        String name, contact, gender, name3 = null, contact3 = null, gender3= "";
         String name2 = null, contact2 = null; 
         String gender2="";
         System.out.print("\nEnter customer name: ");
@@ -138,6 +140,15 @@ class Hotel
         contact2=sc.next();
         System.out.print("Enter gender: ");
         gender2 = sc.next();
+        }
+        if(i < 4)
+        {
+            System.out.print("Enter second customer name: ");
+            name3 = sc.next();
+            System.out.print("Enter contact number: ");
+            contact3=sc.next();
+            System.out.print("Enter gender: ");
+            gender3 = sc.next();  
         }      
         
           switch (i) {
@@ -148,8 +159,12 @@ class Hotel
             case 3:hotel_ob.luxury_singleerrom[rn]=new Singleroom(name,contact,gender);
                 break;
             case 4:hotel_ob.deluxe_singleerrom[rn]=new Singleroom(name,contact,gender);
+                break;           
+            case 5:hotel_ob.luxury_triplerrom[rn]=new TripleRoom(name,contact,gender,name2,contact2,gender2, name3, contact3,gender3);
                 break;
-            default:System.out.println("Wrong option");
+            case 6:hotel_ob.deluxe_triplerrom[rn]=new TripleRoom(name,contact,gender,name2,contact2,gender2, name3, contact3,gender3);
+                break;
+                default:System.out.println("Wrong option");
                 break;
         }
     }
@@ -248,6 +263,50 @@ class Hotel
                     return;
                 }
                 break;
+            case 5:
+                for(j=0;j<hotel_ob.luxury_triplerrom.length;j++)
+                {
+                    if(hotel_ob.luxury_triplerrom[j]==null)
+                    {
+                        System.out.print(j+1+",");
+                    }
+                }
+                System.out.print("\nEnter room number: ");
+                try{
+                rn=sc.nextInt();
+                rn--;
+                if(hotel_ob.luxury_triplerrom[rn]!=null)
+                    throw new NotAvailable();
+                CustDetails(i,rn);
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Invalid Option");
+                    return;
+                }
+                break;
+            case 6:
+                 for(j=0;j<hotel_ob.deluxe_triplerrom.length;j++)
+                {
+                    if(hotel_ob.deluxe_triplerrom[j]==null)
+                    {
+                        System.out.print(j+11+",");
+                    }
+                }
+                System.out.print("\nEnter room number: ");
+                try{
+                rn=sc.nextInt();
+                rn=rn-11;
+                if(hotel_ob.deluxe_triplerrom[rn]!=null)
+                    throw new NotAvailable();
+                CustDetails(i,rn);
+                }
+                catch(Exception e)
+                {
+                    System.out.println("Invalid Option");
+                    return;
+                }
+                break;
             default:
                 System.out.println("Enter valid option");
                 break;
@@ -265,6 +324,10 @@ class Hotel
             case 3:System.out.println("Number of single beds : 1\nAC : Yes\nFree breakfast : Yes\nCharge per day:2200  ");
                 break;
             case 4:System.out.println("Number of single beds : 1\nAC : No\nFree breakfast : Yes\nCharge per day:1200 ");
+                break;
+            case 5:System.out.println("Number of double beds : 1 Number of single beds : 1\nAC : Yes\nFree breakfast : Yes\nCharge per day:4000 ");
+                break;
+            case 6:System.out.println("Number of double beds : 1 Number of single beds : 1\nAC : No\nFree breakfast : Yes\nCharge per day:3000  ");
                 break;
             default:
                 System.out.println("Enter valid option");
@@ -535,7 +598,7 @@ public class Main {
         {
             FileInputStream fin=new FileInputStream(f);
             ObjectInputStream ois=new ObjectInputStream(fin);
-            Hotel.hotel_ob=(holder)ois.readObject();
+            //Hotel.hotel_ob=(holder)ois.readObject();
         }
         Scanner sc = new Scanner(System.in);
         int ch,ch2;
@@ -546,7 +609,7 @@ public class Main {
         System.out.println("\nEnter your choice :\n1.Display room details\n2.Display room availability \n3.Book\n4.Order food\n5.Checkout\n6.Exit\n");
         ch = sc.nextInt();
         switch(ch){
-            case 1: System.out.println("\nChoose room type :\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room \n4.Deluxe Single Room\n");
+            case 1: System.out.println("\nChoose room type :\n1.Luxury Double Room \n2.Deluxe Double Room \n3.Luxury Single Room \n4.Deluxe Single Room\n5.Luxury Triple Room \n6.Deluxe TripleRoom\n");
                     ch2 = sc.nextInt();
                     Hotel.features(ch2);
                 break;
@@ -610,6 +673,7 @@ public class Main {
         }        
             catch(Exception e)
             {
+                System.out.println("hi");
                 System.out.println("Not a valid input");
             }
     }
